@@ -1,0 +1,7 @@
+# requirements.txt
+
+SFML
+# To install SFML on macOS, use Homebrew:
+# brew install sfml
+
+# Additional dependencies can be added here as needed.
