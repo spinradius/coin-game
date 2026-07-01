@@ -2,7 +2,14 @@
 #include "utils.hpp"
 #include <SFML/Window/Keyboard.hpp>
 
-Player::Player() : position(100.f, 300.f), speed(5.f), radius(15.f) {}
+// Constants
+namespace {
+  constexpr float BOUNDARY_OFFSET = 10.f;
+  constexpr float INITIAL_X = 100.f;
+  constexpr float INITIAL_Y = 300.f;
+}
+
+Player::Player() : position(INITIAL_X, INITIAL_Y), speed(5.f), radius(15.f) {}
 
 void Player::update() {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
@@ -14,8 +21,10 @@ void Player::update() {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
     position.x += speed;
 
-  // Boundaries with offset
-  float offset = 10.f;
+  clampToBounds(BOUNDARY_OFFSET);
+}
+
+void Player::clampToBounds(float offset) {
   if (position.x < offset + radius)
     position.x = offset + radius;
   if (position.x > SCREEN_WIDTH - offset - radius)
@@ -39,4 +48,4 @@ sf::Vector2f Player::getPosition() const { return position; }
 
 float Player::getRadius() const { return radius; }
 
-void Player::resetPosition() { position = sf::Vector2f(100.f, 300.f); }
+void Player::resetPosition() { position = sf::Vector2f(INITIAL_X, INITIAL_Y); }

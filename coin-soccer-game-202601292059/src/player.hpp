@@ -17,6 +17,9 @@ private:
   sf::Vector2f position;
   float speed;
   float radius;
+  
+  // Helper method
+  void clampToBounds(float offset);
 };
 
 #endif // PLAYER_HPP
