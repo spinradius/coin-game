@@ -6,7 +6,7 @@
 #include <fstream>
 
 Canvas::Canvas()
-    : window(sf::VideoMode({800, 600}), "Coin Soccer"), fontLoaded(false) {
+    : window(sf::VideoMode(800, 600), "Coin Soccer"), fontLoaded(false) {
   window.setFramerateLimit(60);
 
   namespace fs = std::filesystem;
@@ -35,7 +35,7 @@ Canvas::Canvas()
   bool loaded = false;
   for (const auto &cand : candidates) {
     if (fs::exists(cand)) {
-      if (font.openFromFile(cand)) {
+      if (font.loadFromFile(cand)) {
         fontLoaded = true;
         loaded = true;
         std::cerr << "Loaded font from: " << cand << std::endl;
@@ -121,7 +121,10 @@ void Canvas::drawBall(sf::Vector2f position, float radius) {
 void Canvas::drawText(const std::string &textStr, sf::Vector2f position,
                       unsigned int size, sf::Color color) {
   if (fontLoaded) {
-    sf::Text text(font, textStr, size);
+    sf::Text text;
+    text.setFont(font);
+    text.setString(textStr);
+    text.setCharacterSize(size);
     text.setPosition(position);
     text.setFillColor(color);
     window.draw(text);
@@ -133,8 +136,9 @@ void Canvas::display() { window.display(); }
 bool Canvas::isOpen() const { return window.isOpen(); }
 
 void Canvas::pollEvents() {
-  while (const std::optional event = window.pollEvent()) {
-    if (event->is<sf::Event::Closed>()) {
+  sf::Event event;
+  while (window.pollEvent(event)) {
+    if (event.type == sf::Event::Closed) {
       window.close();
     }
   }

@@ -17,6 +17,13 @@ private:
   sf::Vector2f velocity;
   float radius;
   float friction;
+  
+  // Helper methods
+  void applyFriction();
+  void updatePosition(float deltaTime);
+  void clampToBounds();
+  void bounceX();
+  void bounceY();
 };
 
 #endif // BALL_HPP
